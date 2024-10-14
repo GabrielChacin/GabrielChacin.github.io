@@ -1,0 +1,68 @@
+/* Estilos globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Estilo para la barra superior */
+header {
+    background-color: #004080;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* Estilo para el contenido principal */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 20px;
+}
+.map-container {
+    width: 80%;
+    height: 60vh;
+    background-color: #f0f0f0;
+    position: relative;
+    border: 2px solid #ccc;
+}
+
+.side-box {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100%;
+    background-color: rgba(255, 255, 0, 0.8);
+    display: none;
+}
+
+/* Estilo para la barra inferior */
+footer {
+    background-color: #004080;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+footer a, footer button {
+    color: white;
+    background: none;
+    border: none;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+}
+footer a:hover, footer button:hover {
+    text-decoration: underline;
+}
