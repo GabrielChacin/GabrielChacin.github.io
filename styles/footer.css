@@ -1,0 +1,119 @@
+/* styles/contact_faq.css */
+
+/* Estilo para la barra superior */
+header {
+    background-color: #004080;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* Estilo base para el contenedor principal en Contacto y FAQ */
+main {
+    display: flex;
+    flex-direction: column; /* Alineación vertical */
+    justify-content: flex-start; /* Iniciar desde arriba */
+    align-items: center; /* Centramos el contenido horizontalmente */
+    padding: 40px;
+    gap: 20px; /* Espacio entre los elementos */
+}
+
+
+/* Estilo para las listas */
+ul {
+    list-style-type: none; /* Sin viñetas */
+    padding: 0;
+}
+
+ul li {
+    margin: 10px 0;
+}
+
+/* Estilo específico para la FAQ */
+.faq-item {
+    display: flex;
+    flex-direction: column; /* Alineación vertical */
+    justify-content: flex-start; /* Iniciar desde arriba */
+    width: 100%; /* Ancho completo */
+    max-width: 800px; /* Ancho máximo de cada pregunta */
+    margin-bottom: 20px; /* Espacio entre preguntas */
+}
+
+.faq-item h3 {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.faq-item p {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.involucrados {
+    display: flex;
+    flex-direction: column; /* Alineación vertical */
+    justify-content: flex-start; /* Iniciar desde arriba */
+    width: 100%; /* Ancho completo */
+    max-width: 800px; /* Ancho máximo de cada pregunta */
+    margin-bottom: 20px; /* Espacio entre preguntas */
+}
+
+.involucrados h3 {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.involucrados p {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.GitHub {
+    display: flex;
+    flex-direction: column; /* Alineación vertical */
+    justify-content: flex-start; /* Iniciar desde arriba */
+    width: 100%; /* Ancho completo */
+    max-width: 800px; /* Ancho máximo de cada pregunta */
+    margin-bottom: 20px; /* Espacio entre preguntas */
+}
+
+.GitHub h3 {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.GitHub p {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilo para la barra inferior */
+footer {
+    background-color: #004080;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+footer a, footer button {
+    color: white;
+    background: none;
+    border: none;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+}
+footer a:hover, footer button:hover {
+    text-decoration: underline;
+}

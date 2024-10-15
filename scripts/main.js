@@ -1,20 +1,28 @@
-// Función para mostrar/ocultar el rectángulo lateral
-document.getElementById('toggleBtn').addEventListener('click', function() {
-    const sideBox = document.getElementById('sideBox');
-    if (sideBox.style.display === 'none' || sideBox.style.display === '') {
-        sideBox.style.display = 'block';
-    } else {
-        sideBox.style.display = 'none';
+async function main() {
+    try {
+        // Obtener el archivo SVG
+        const response = await fetch('assets/countries.svg');
+        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+
+        const svgContent = await response.text();
+
+        // Verificar si el contenedor existe
+        const mapContainer = document.querySelector('.map-container');
+        if (!mapContainer) throw new Error('No se encontró el contenedor del mapa');
+
+        // Insertar el contenido del SVG en el contenedor
+        mapContainer.innerHTML = svgContent;
+
+        // Asignar ID al SVG
+        const svgElement = mapContainer.children[0];
+        if (svgElement) {
+            svgElement.setAttribute('id', 'world-map');
+        } else {
+            throw new Error('No se encontró el SVG dentro del contenedor');
+        }
+    } catch (error) {
+        console.error('Error al cargar el mapa:', error);
     }
-});
-
-// Ejemplo de función para cargar el mapa mundial (lógica futura)
-function loadWorldMap() {
-    // Aquí iría la lógica para cargar el mapa con datos del dataset
-    console.log("Cargando mapa mundial...");
 }
 
-// Cargar el mapa cuando se cargue la página
-window.onload = function() {
-    loadWorldMap();
-}
+main();

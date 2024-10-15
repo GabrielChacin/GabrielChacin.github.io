@@ -1,10 +1,10 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tsunamis a lo largo de la historia</title>
-    <!-- Vinculamos el archivo CSS -->
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
@@ -15,26 +15,51 @@
 
     <!-- Contenedor principal con espacio para el mapa y el rectángulo lateral -->
     <main>
-        <div class="map-container">
-            <!-- Espacio reservado para el mapa -->
-            <div id="map">
-                Aquí irá el mapa mundial
+        <!-- Barra de tiempo -->
+        <div class="time-line">
+            <label for="yearRange">Selecciona el rango de años:</label>
+            <input type="range" id="yearRange" min="-1350" max="2000" value="-1350" step="670" oninput="updateYearDisplay(this.value)">
+            <span id="yearDisplay">1350</span>
+        </div>
+    
+        <!-- Contenedor que alinea el mapa y el side-box -->
+        <div class="content-row">
+            <div class="map-container" id="map">
+                <object id="world-map" type="image/svg+xml" data="countries.svg"></object>
             </div>
-
-            <!-- Rectángulo lateral para mostrar información del tsunami -->
+        
             <div class="side-box" id="sideBox"></div>
         </div>
     </main>
+    
 
-    <!-- Barra inferior con los enlaces y el botón para mostrar el rectángulo -->
+    <!-- Barra inferior con los enlaces -->
     <footer>
-        <a href="#">DataSet</a>
-        <a href="#">Contáctenos</a>
-        <a href="#">FAQ</a>
-        <button id="toggleBtn">Mostrar Rectángulo</button>
+        <a href="datasets.html">DataSets</a>
+        <a href="contacto.html">Contáctenos</a>
+        <a href="faq.html">FAQ</a>
+        <!-- Botón para mostrar/ocultar el rectángulo -->
+        <button onclick="toggleSideBox()">Mostrar Rectángulo</button>
     </footer>
 
-    <!-- Vinculamos el archivo JS -->
+    <!-- Script para mostrar/ocultar el rectángulo -->
+    <script>
+        function toggleSideBox() {
+            const sideBox = document.getElementById('sideBox');
+            if (sideBox.style.display === 'none' || sideBox.style.display === '') {
+                sideBox.style.display = 'block';
+            } else {
+                sideBox.style.display = 'none';
+            }
+        }
+
+        function updateYearDisplay(year) {
+            document.getElementById('yearDisplay').textContent = year;
+            // Aquí podrías agregar la lógica para actualizar el mapa según el año
+            console.log(`Año seleccionado: ${year}`);
+        }
+    </script>
+    
     <script src="scripts/main.js"></script>
 </body>
 </html>
