@@ -32,96 +32,54 @@ main {
     display: flex;
     flex-direction: column; /* Mantenemos el cuerpo en columna */
     justify-content: flex-start; /* Iniciar el contenido desde la parte superior */
-    align-items: left; /* Centramos el contenido horizontalmente */
-    padding: 40px;
+    align-items: left; 
     gap: 20px; /* Espacio entre los elementos */
-}
-
-/* Contenedor que alinea el mapa y el rectángulo side-box horizontalmente */
-.content-row {
-    display: flex;
-    justify-content: left; /* Centramos los elementos */
-    gap: 40px; /* Espacio entre el mapa y el side-box */
-    align-items: left;
-    width: 100%;
-}
-
-/* Estilo para la barra deslizante en la sección de la línea de tiempo */
-.time-line {
-    width: 70%;
-    padding: 20px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px; /* Espacio entre los elementos */
-    margin-bottom: 30px;
-}
-
-input[type="range"] {
-    width: 300px;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 8px;
-    background: #004080;
-    outline: none;
-    opacity: 0.9;
-    border-radius: 5px;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    background: #f0f0f0;
-    cursor: pointer;
-    border-radius: 50%;
-    border: 2px solid #004080;
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    background: #f0f0f0;
-    cursor: pointer;
-    border-radius: 50%;
-    border: 2px solid #004080;
-}
-
-/* Estilo para el valor del año que se muestra al lado de la barra */
-#yearDisplay {
-    font-size: 1.2em;
-    color: #004080;
-    font-weight: bold;
 }
 
 /* Estilo para el contenedor del mapa */
 .map-container {
-    display: flex;
-    justify-content: center;
     width: 70%;
     height: 60vh;
     background-color: #38448f;
     border: 2px solid #ccc;
     border-radius: 30px;
-    overflow: hidden; /* Asegura que no se salga del contenedor */
+    overflow: hidden;
 }
 
-#world-map {
-    width: 100%; /* Ajusta el ancho al 100% del contenedor */
-    height: 100%; /* Ajusta el alto al 100% del contenedor */
+.content-row {
+    display: flex;
+    padding: 40px;
+    gap: 40px; /* Espacio entre el mapa y el side-box */
+    align-items: left;
+    width: 100%;
 }
 
-/* Estilo para el side-box */
+#map {
+    width: 100%;
+    height: 100%;
+}
+
 .side-box {
-    width: 250px;
+    width: 25%;
+    background-color: #f5f5f5;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow-y: auto;
     height: 60vh;
-    background-color: #306ba7;
-    display: none; /* Inicialmente oculto */
-    border-radius: 30px;
 }
+
+.time-line {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px;
+}
+
+.time-line input[type="range"] {
+    width: 70%;
+    cursor: pointer;
+}
+
 
 /* Estilo para la barra inferior */
 footer {

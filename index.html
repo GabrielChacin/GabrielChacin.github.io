@@ -5,60 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tsunamis a lo largo de la historia</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
     <link rel="stylesheet" href="styles/main.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
 </head>
 <body>
-    <!-- Barra superior con el título -->
     <header>
         Tsunamis a lo largo de la historia
     </header>
 
-    <!-- Contenedor principal con espacio para el mapa y el rectángulo lateral -->
     <main>
-        <!-- Barra de tiempo -->
         <div class="time-line">
-            <label for="yearRange">Selecciona el rango de años:</label>
-            <input type="range" id="yearRange" min="-1350" max="2000" value="-1350" step="670" oninput="updateYearDisplay(this.value)">
-            <span id="yearDisplay">1350</span>
+            <label for="epochRange">Selecciona la época:</label>
+            <input type="range" id="epochRange" min="1" max="5" value="1" step="1" oninput="updateEpochDisplay(this.value)">
+            <span id="epochDisplay">Época 1 (1350 a.C. - 680 d.C.)</span>
         </div>
-    
-        <!-- Contenedor que alinea el mapa y el side-box -->
+
         <div class="content-row">
-            <div class="map-container" id="map">
-                <object id="world-map" type="image/svg+xml" data="countries.svg"></object>
+            <div class="map-container" id="map"></div>
+            <div class="side-box" id="sideBox">
+                <h3>Detalles del Tsunami</h3>
+                <div id="details"></div>
             </div>
-        
-            <div class="side-box" id="sideBox"></div>
         </div>
     </main>
     
-
-    <!-- Barra inferior con los enlaces -->
     <footer>
         <a href="datasets.html">DataSets</a>
         <a href="contacto.html">Contáctenos</a>
         <a href="faq.html">FAQ</a>
-        <!-- Botón para mostrar/ocultar el rectángulo -->
-        <button onclick="toggleSideBox()">Mostrar Rectángulo</button>
     </footer>
-
-    <!-- Script para mostrar/ocultar el rectángulo -->
-    <script>
-        function toggleSideBox() {
-            const sideBox = document.getElementById('sideBox');
-            if (sideBox.style.display === 'none' || sideBox.style.display === '') {
-                sideBox.style.display = 'block';
-            } else {
-                sideBox.style.display = 'none';
-            }
-        }
-
-        function updateYearDisplay(year) {
-            document.getElementById('yearDisplay').textContent = year;
-            // Aquí podrías agregar la lógica para actualizar el mapa según el año
-            console.log(`Año seleccionado: ${year}`);
-        }
-    </script>
     
     <script src="scripts/main.js"></script>
 </body>
