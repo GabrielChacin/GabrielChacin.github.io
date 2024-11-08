@@ -1,5 +1,3 @@
-// scripts/main.js
-
 // Crear el mapa centrado en el mundo
 const map = L.map('map').setView([20, 0], 2);
 
@@ -9,6 +7,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 console.log('Mapa inicializado');
+
 // Cargar el archivo GeoJSON de países
 fetch('assets/countries.geo.json')
     .then(response => response.json())
@@ -49,16 +48,12 @@ fetch('data/tsunamis-2023-09-11_22-13-51_ 0530.csv')
                     
                     // Limpiar coordenadas más agresivamente
                     if (cleanHeader === 'Latitude' || cleanHeader === 'Longitude') {
-                        // Extraer solo números, signo negativo y punto decimal
                         value = value.replace(/[^0-9.-]/g, '');
-                        
-                        // Si queda vacío después de limpiar, dejarlo como vacío
                         if (value === '-' || value === '') {
                             value = '';
                         }
                     }
                     
-                    // Convertir valores negativos con formato especial
                     if (value.includes('−')) {
                         value = value.replace('−', '-');
                     }
@@ -68,12 +63,9 @@ fetch('data/tsunamis-2023-09-11_22-13-51_ 0530.csv')
                 return obj;
             })
             .filter(item => {
-                // Filtrar registros con coordenadas válidas
                 const lat = parseFloat(item.Latitude);
                 const lng = parseFloat(item.Longitude);
-                return !isNaN(lat) && !isNaN(lng) && 
-                       lat >= -90 && lat <= 90 && 
-                       lng >= -180 && lng <= 180;
+                return isValidCoordinate(lat, lng);
             });
 
         console.log('Primeros registros:', tsunamiData.slice(0, 5).map(t => ({
@@ -84,10 +76,22 @@ fetch('data/tsunamis-2023-09-11_22-13-51_ 0530.csv')
 
         console.log('Total de registros con coordenadas válidas:', tsunamiData.length);
         
-        updateTsunamiMarkers(1);
+        calculateStats(tsunamiData); // Mover aquí
+        updateTsunamiMarkers(1,0);
     })
     .catch(error => console.error('Error al cargar los datos de tsunamis:', error));
 
+function calculateStats(data) {
+    const totalTsunamis = data.length;
+    const totalDeaths = data.reduce((acc, t) => acc + (parseInt(t.TotalDeaths) || 0), 0);
+    const totalDamage = data.reduce((acc, t) => acc + (parseFloat(t.TotalDamage) || 0), 0);
+    const avgMagnitude = totalTsunamis > 0 ? data.reduce((acc, t) => acc + (parseFloat(t.EarthquakeMagnitude) || 0), 0) / totalTsunamis : 0;
+    
+    document.getElementById('totalTsunamis').textContent = `Total de Tsunamis: ${totalTsunamis}`;
+    document.getElementById('avgMagnitude').textContent = `Magnitud Promedio: ${avgMagnitude.toFixed(2)}`;
+    document.getElementById('totalDeaths').textContent = `Total de Muertes: ${totalDeaths}`;
+    document.getElementById('totalDamage').textContent = `Daños Totales ($M): ${totalDamage}`;
+}
 
 // Ajustar según el rango de años en tu nuevo dataset
 const epochs = {
@@ -98,24 +102,26 @@ const epochs = {
     5: { start: 2001, end: 2023 }
 };
 
-// Función para actualizar la visualización de la época
-function updateEpochDisplay(value) {
-    const epoch = epochs[value];
-    document.getElementById('epochDisplay').textContent = `Época ${value} (${epoch.start} a ${epoch.end})`;
-    updateTsunamiMarkers(value);
+function applyFilters() {
+    const epochNumber = document.getElementById('epochSelect').value; // Sin espacio
+    const minMagnitude = document.getElementById('magnitudeRange').value;
+    updateTsunamiMarkers(epochNumber, minMagnitude);
 }
 
-function updateTsunamiMarkers(epochNumber) {
+function updateTsunamiMarkers(epochNumber, minMagnitude) {
     const { start, end } = epochs[epochNumber];
     console.log(`Actualizando marcadores para época ${epochNumber} (${start}-${end})`);
     
-    // Limpiar los marcadores anteriores
     tsunamiLayer.clearLayers();
 
-    // Filtrar y agregar los tsunamis que coincidan con el rango de la época
     const filteredData = tsunamiData.filter(t => {
         const year = parseInt(t.Year);
-        return year >= start && year <= end;
+        const magnitude = parseFloat(t.EarthquakeMagnitude);
+        const lat = parseFloat(t.Latitude);
+        const lng = parseFloat(t.Longitude);
+        return year >= start && year <= end && 
+               magnitude >= minMagnitude &&
+               isValidCoordinate(lat, lng);
     });
 
     console.log(`Tsunamis filtrados para esta época: ${filteredData.length}`);
@@ -123,7 +129,6 @@ function updateTsunamiMarkers(epochNumber) {
     let validCount = 0;
     let invalidCount = 0;
 
-    // Determinar el radio máximo y mínimo para escalar los marcadores
     const waterHeights = filteredData.map(t => 
         parseFloat(t.MaximumWaterHeight) || 0
     ).filter(height => !isNaN(height));
@@ -131,20 +136,21 @@ function updateTsunamiMarkers(epochNumber) {
     const minHeight = Math.min(...waterHeights, 0);
     const maxHeight = Math.max(...waterHeights, 1);
 
+    // Crear un grupo de marcadores
+    const markers = L.markerClusterGroup();
+
     filteredData.forEach(t => {
         try {
-            // Convertir y validar coordenadas
             const lat = parseFloat(t.Latitude);
             const lng = parseFloat(t.Longitude);
 
-            // Calcular radio escalado
-            const baseRadius = 5;
+            const baseRadius = 3; // Tamaño base del radio
             const waterHeight = parseFloat(t.MaximumWaterHeight) || 0;
             const scaledRadius = baseRadius + (
                 waterHeight > 0 
                     ? Math.min(
                         baseRadius * 2, 
-                        baseRadius * (waterHeight / maxHeight) * 3
+                        baseRadius * (waterHeight / maxHeight) * 2
                     )
                     : baseRadius
             );
@@ -154,7 +160,10 @@ function updateTsunamiMarkers(epochNumber) {
                 radius: scaledRadius,
                 fillOpacity: 0.7,
                 fillColor: getColorByMagnitude(t.EarthquakeMagnitude)
-            }).addTo(tsunamiLayer);
+            });
+
+            // Agregar el marcador al grupo
+            markers.addLayer(marker);
 
             // Actualizar el popup con la información relevante
             const earthquakeMagnitude = parseFloat(t.EarthquakeMagnitude) || 'No disponible';
@@ -178,26 +187,24 @@ function updateTsunamiMarkers(epochNumber) {
         }
     });
 
+    // Agregar el grupo de marcadores al mapa
+    tsunamiLayer.addLayer(markers);
+
     console.log(`Tsunamis válidos: ${validCount}, inválidos: ${invalidCount}`);
     
-    // Actualizar leyenda con información de la época
     updateEpochLegend(epochNumber, start, end, validCount);
 }
 
-// Función para crear o actualizar la leyenda de la época
 function updateEpochLegend(epochNumber, startYear, endYear, tsunamiCount) {
-    // Eliminar leyenda anterior si existe
     const existingLegend = document.getElementById('epochLegend');
     if (existingLegend) {
         existingLegend.remove();
     }
 
-    // Crear contenedor para la leyenda
     const legendContainer = document.createElement('div');
     legendContainer.id = 'epochLegend';
     legendContainer.className = 'legend';
     
-    // Contenido de la leyenda
     legendContainer.innerHTML = `
         <h4>Época ${epochNumber}</h4>
         <p><strong>Años:</strong> ${startYear} - ${endYear}</p>
@@ -219,11 +226,9 @@ function updateEpochLegend(epochNumber, startYear, endYear, tsunamiCount) {
         </div>
     `;
 
-    // Añadir leyenda al mapa
     map.getContainer().appendChild(legendContainer);
 }
 
-// Modificar la función de color para ser más gradual
 function getColorByMagnitude(magnitude) {
     magnitude = parseFloat(magnitude);
     if (isNaN(magnitude)) return '#808080'; // gris para magnitud desconocida
@@ -233,16 +238,12 @@ function getColorByMagnitude(magnitude) {
     return '#f44336';                        // rojo
 }
 
-// Función para validar coordenadas con más flexibilidad
 function isValidCoordinate(lat, lng) {
-    // Permitir coordenadas con valores no nulos y dentro de rangos razonables
     return !isNaN(lat) && !isNaN(lng) && 
            lat >= -90 && lat <= 90 && 
            lng >= -180 && lng <= 180;
 }
 
-
-    // Crea una capa de grupo para los marcadores de tsunamis
 const tsunamiLayer = L.layerGroup().addTo(map);
 
 console.log('Primeros registros:', tsunamiData.slice(0, 5).map(t => ({

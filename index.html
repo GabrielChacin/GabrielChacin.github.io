@@ -1,35 +1,51 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tsunamis a lo largo de la historia</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
-    <link rel="stylesheet" href="styles/main.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tsunamis a lo largo de la historia</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+        <link rel="stylesheet" href="styles/main.css">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+        <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    </head>
 <body>
     <header>
         Tsunamis a lo largo de la historia
     </header>
 
     <main>
-        <div class="time-line">
-            <label for="epochRange">Selecciona la época:</label>
-            <input type="range" id="epochRange" min="1" max="5" value="1" step="1" oninput="updateEpochDisplay(this.value)">
-            <span id="epochDisplay">Época 1 (1350 a.C. - 680 d.C.)</span>
+        <div id="filterPanel">
+            <label for="epochSelect">Selecciona Época:</label>
+            <select id="epochSelect" onchange="applyFilters()">
+                <option value="1">Época 1</option>
+                <option value="2">Época 2</option>
+                <option value="3">Época 3</option>
+                <option value="4">Época 4</option>
+                <option value="5">Época 5</option>
+            </select>
+            <label for="magnitudeRange">Magnitud Mínima:</label>
+            <input type="range" id="magnitudeRange" min="0" max="10" value="0" step="1" onchange="applyFilters()">
         </div>
 
         <div class="content-row">
             <div class="map-container" id="map"></div>
             <div class="side-box" id="sideBox">
-                <h3>Detalles del Tsunami</h3>
+                <h3>Detalles de Tsunamis</h3> 
                 <div id="details"></div>
+                <div id="stats">
+                    <h4>Estadísticas Generales</h4>
+                    <p id="totalTsunamis">Total de Tsunamis: 0</p>
+                    <p id="avgMagnitude">Magnitud Promedio: 0</p>
+                    <p id="totalDeaths">Total de Muertes: 0</p>
+                    <p id="totalDamage">Daños Totales ($M): 0</p>
+                </div>
             </div>
         </div>
     </main>
