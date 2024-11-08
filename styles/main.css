@@ -80,6 +80,36 @@ main {
     cursor: pointer;
 }
 
+.legend {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    max-width: 250px;
+}
+
+.legend h4, .legend h5 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.legend .magnitude-legend div {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.legend .legend-color {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
 
 /* Estilo para la barra inferior */
 footer {
