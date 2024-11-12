@@ -180,6 +180,20 @@ function updateTsunamiMarkers(epochNumber, minMagnitude) {
                 <p><strong>Daños ($M):</strong> ${totalDamage}</p>
             `);
 
+            // Reproducir sonido al hacer clic en el marcador
+            marker.on('click', function() {
+                const tsunamiSound = document.getElementById('tsunamiSound');
+                tsunamiSound.currentTime = 0; // Reiniciar el sonido
+                tsunamiSound.play(); // Reproducir el sonido
+            });
+
+            // Detener el sonido al cerrar el popup
+            marker.on('popupclose', function() {
+                const tsunamiSound = document.getElementById('tsunamiSound');
+                tsunamiSound.pause(); // Detener el sonido
+                tsunamiSound.currentTime = 0; // Reiniciar el sonido
+            });
+
             validCount++;
         } catch (error) {
             console.error('Error al crear marcador:', error, t);
