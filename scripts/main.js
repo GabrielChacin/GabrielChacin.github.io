@@ -180,10 +180,22 @@ function updateTsunamiMarkers(epochNumber, minMagnitude) {
                 <p><strong>Daños ($M):</strong> ${totalDamage}</p>
             `);
 
-            // Reproducir sonido al hacer clic en el marcador
-            marker.on('click', function() {
+             // Reproducir sonido al hacer clic en el marcador
+             marker.on('click', function() {
                 const tsunamiSound = document.getElementById('tsunamiSound');
                 tsunamiSound.currentTime = 0; // Reiniciar el sonido
+
+                // Ajustar el volumen según la magnitud
+                if (earthquakeMagnitude < 6) {
+                    tsunamiSound.volume = 0.2; // Volumen bajo para magnitudes menores a 6
+                } else if (earthquakeMagnitude >= 6 && earthquakeMagnitude < 7) {
+                    tsunamiSound.volume = 0.5; // Volumen medio para magnitudes entre 6 y 7
+                } else if (earthquakeMagnitude >= 7 && earthquakeMagnitude < 8) {
+                    tsunamiSound.volume = 0.7; // Volumen alto para magnitudes entre 7 y 8
+                } else {
+                    tsunamiSound.volume = 1.0; // Volumen máximo para magnitudes mayores a 8
+                }
+
                 tsunamiSound.play(); // Reproducir el sonido
             });
 
