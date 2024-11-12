@@ -189,9 +189,9 @@ function updateTsunamiMarkers(epochNumber, minMagnitude) {
                 if (earthquakeMagnitude < 6) {
                     tsunamiSound.volume = 0.2; // Volumen bajo para magnitudes menores a 6
                 } else if (earthquakeMagnitude >= 6 && earthquakeMagnitude < 7) {
-                    tsunamiSound.volume = 0.5; // Volumen medio para magnitudes entre 6 y 7
+                    tsunamiSound.volume = 0.4; // Volumen medio para magnitudes entre 6 y 7
                 } else if (earthquakeMagnitude >= 7 && earthquakeMagnitude < 8) {
-                    tsunamiSound.volume = 0.7; // Volumen alto para magnitudes entre 7 y 8
+                    tsunamiSound.volume = 0.6; // Volumen alto para magnitudes entre 7 y 8
                 } else {
                     tsunamiSound.volume = 1.0; // Volumen máximo para magnitudes mayores a 8
                 }
