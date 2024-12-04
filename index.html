@@ -33,6 +33,7 @@
             <label for="magnitudeRange">Magnitud Mínima:</label>
             <input type="range" id="magnitudeRange" min="0" max="10" value="0" step="1" onchange="applyFilters()">
         </div>
+        <button id="connect-arduino">Conectar Arduino</button>
 
         <div class="content-row">
             <div class="map-container" id="map"></div>
@@ -56,7 +57,7 @@
         <a href="faq.html">FAQ</a>
     </footer>
     
-    <script src="scripts/main.js"></script>
+    <script src="scripts/main.js" type="module"></script>
     
     <audio id="tsunamiSound" src="assets/627623__klankbeeld__waves-sand-beach-048.wav" preload="auto"></audio>
 </body>
